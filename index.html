@@ -672,8 +672,7 @@ footer {
 </footer>
 
 <script>
-const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY_HERE';
-const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/4gM9AS1DT5mc03KfTXfYY01';
+const STRIPE_PAYMENT_LINK = 'YOUR_STRIPE_PAYMENT_LINK_HERE';
 
 let resumeText = '';
 let hasGenerated = false;
@@ -718,25 +717,19 @@ ${jobDescription ? `Job Description to tailor resume for:\n${jobDescription}` : 
 Write a complete professional resume with: Contact Info (use the exact name, email, and phone provided — if email or phone are marked as omit, leave them out entirely, do NOT use bracket placeholders under any circumstances), Professional Summary (2-3 powerful sentences), Work Experience (strong action verbs, quantified results), Skills, and Education. If any information like university name or location is not provided, omit that field entirely — do NOT use bracket placeholders under any circumstances. ${jobDescription ? 'Tailor the resume specifically to match the job description — use relevant keywords from the job posting and highlight the most relevant experience.' : ''} Make it exceptional. Clean formatting, no fluff. Use plain text only. No markdown symbols like **, --, ---, or #. Use ALL CAPS for section headers instead. Output only the resume itself — no notes, instructions, tips, or commentary at the end. Nothing after the last resume section.`;
 
   try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('/api/generate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${OPENAI_API_KEY}`
       },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [{ role: 'user', content: prompt }],
-        max_tokens: 1200,
-        temperature: 0.7
-      })
+      body: JSON.stringify({ prompt })
     });
 
     const data = await response.json();
-    resumeText = data.choices[0].message.content;
+    resumeText = data.result;
     document.getElementById('loading').classList.remove('visible');
 
-    const preview = resumeText;
+    const preview = resumeText.slice(0, 350) + '\n\n— Subscribe to unlock your full resume —';
     document.getElementById('resume-output').textContent = preview;
     document.getElementById('output-section').classList.add('visible');
     document.getElementById('paywall').style.display = 'block';
@@ -799,22 +792,16 @@ ${jobDescription ? `Job Description:\n${jobDescription}` : ''}
 Write a cover letter starting directly with the opening paragraph — do NOT include a header, address block, or date at the top. Start with "Dear Hiring Manager," then go straight into 2-3 compelling body paragraphs highlighting relevant experience and skills, ${jobDescription ? 'specifically referencing the job requirements,' : ''} and end with a strong closing. Keep it to one page. Professional but personable tone. Plain text only, no markdown symbols. Do NOT use any bracket placeholders whatsoever — use the actual information provided. If email or phone are marked omit, leave them out. Output only the cover letter itself, nothing else.`;
 
   try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('/api/generate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${OPENAI_API_KEY}`
       },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [{ role: 'user', content: prompt }],
-        max_tokens: 800,
-        temperature: 0.7
-      })
+      body: JSON.stringify({ prompt })
     });
 
     const data = await response.json();
-    coverLetterText = data.choices[0].message.content;
+    coverLetterText = data.result;
     document.getElementById('cover-loading').style.display = 'none';
 
     const preview = coverLetterText.slice(0, 300) + '\n\n— Subscribe to unlock your full cover letter —';
