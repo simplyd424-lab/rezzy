@@ -729,8 +729,8 @@ Write a complete professional resume with: Contact Info (use the exact name, ema
     resumeText = data.result;
     document.getElementById('loading').classList.remove('visible');
 
-    const preview = resumeText;
-    document.getElementById('resume-output').textContent = preview;
+    
+    document.getElementById('resume-output').teconst preview = resumeText.slice(0, 350) + '\n\n— Subscribe to unlock your full resume —';xtContent = preview;
     document.getElementById('output-section').classList.add('visible');
     document.getElementById('paywall').style.display = 'block';
     hasGenerated = true;
