@@ -729,7 +729,7 @@ Write a complete professional resume with: Contact Info (use the exact name, ema
     resumeText = data.result;
     document.getElementById('loading').classList.remove('visible');
 
-    const preview = resumeText;
+    const preview = resumeText.slice(0, 350) + '\n\n— Subscribe to unlock your full resume —';
     document.getElementById('resume-output').textContent = preview;
     document.getElementById('output-section').classList.add('visible');
     document.getElementById('paywall').style.display = 'block';
@@ -804,7 +804,7 @@ Write a cover letter starting directly with the opening paragraph — do NOT inc
     coverLetterText = data.result;
     document.getElementById('cover-loading').style.display = 'none';
 
-    const preview = coverLetterText;
+    const preview = coverLetterText.slice(0, 300) + '\n\n— Subscribe to unlock your full cover letter —';
     document.getElementById('cover-letter-output').textContent = preview;
     document.getElementById('cover-letter-section').style.display = 'block';
     document.getElementById('paywall').style.display = 'block';
